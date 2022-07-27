@@ -2,10 +2,10 @@ const { listarUm } = require('../services/ContaService');
 const ContaService = require('../services/ContaService');
 
 module.exports = {
-    listarTodos: async (req, res) => {
+    listar: async (req, res) => {
         let json = { error: '', result: [] };
 
-        let contas = await ContaService.listarTodos();
+        let contas = await ContaService.listar();
 
         for (let i in contas) {
             json.result.push({
@@ -38,7 +38,7 @@ module.exports = {
         let json = {error:'', result:{}};
 
         const {descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago} = req.body; 
-     console.table(req)
+     console.log(req.body)
         if(descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago){
             let Contaid = await ContaService.cadastrar(descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
             json.result = {
