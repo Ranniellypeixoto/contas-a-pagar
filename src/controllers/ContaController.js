@@ -1,11 +1,11 @@
-const { buscarUm } = require('../services/ContaService');
+const { listarUm } = require('../services/ContaService');
 const ContaService = require('../services/ContaService');
 
 module.exports = {
-    buscarTodos: async (req, res) => {
+    listarTodos: async (req, res) => {
         let json = { error: '', result: [] };
 
-        let contas = await ContaService.buscarTodos();
+        let contas = await ContaService.listarTodos();
 
         for (let i in contas) {
             json.result.push({
@@ -22,11 +22,11 @@ module.exports = {
         res.json(json);
     },
 
-    buscarUm: async (req, res) => {
+    listarUm: async (req, res) => {
         let json = { error: '', result: {} };
 
-        let descricao = req.params.descricao;
-        let conta = await ContaService.buscarUm(descricao);
+        let id = req.params.id;
+        let conta = await ContaService.listarUm(id);
 
         if (conta) {
             json.result = conta;
@@ -34,13 +34,13 @@ module.exports = {
         res.json(json);
     },
     
-    inserir: async(req, res)=> {
+    cadastrar: async(req, res)=> {
         let json = {error:'', result:{}};
 
         const {descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago} = req.body; 
      console.table(req)
         if(descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago){
-            let Contaid = await ContaService.inserir(descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
+            let Contaid = await ContaService.cadastrar(descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
             json.result = {
                 id: Contaid,
                 descricao,

@@ -2,7 +2,7 @@ const db = require('../db');
 
 module.exports = {
 
-    buscarTodos: () =>{
+    listarTodos: () =>{
         return new Promise((aceito, rejeitado)=>{
 
             db.query('SELECT * FROM contas', (error, results)=>{
@@ -12,10 +12,10 @@ module.exports = {
         });
     },
 
-    buscarUm: (descricao) => {
+    listarUm: (id) => {
         return new Promise((aceito,rejeitado)=>{
 
-            db.query('SELECT * FROM contas WHERE descricao = ?', [descricao],(error, results)=>{
+            db.query('SELECT * FROM contas WHERE id = ?', [id],(error, results)=>{
                 if(error) { rejeitado(error); return; }
                 if(results.length > 0){
                     aceito(results[0]);
@@ -26,7 +26,7 @@ module.exports = {
         });
     },
 
-    inserir: (descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
+    cadastrar: (descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
         return new Promise((aceito,rejeitado)=>{
 
             db.query('INSERT INTO contas (descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) VALUES (?, ?, ?, ?, ?, ?)',
