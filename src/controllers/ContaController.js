@@ -38,7 +38,6 @@ module.exports = {
         let json = {error:'', result:{}};
 
         const {descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago} = req.body; 
-     console.log(req.body)
         if(descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago){
             let Contaid = await ContaService.cadastrar(descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
             json.result = {
