@@ -3,7 +3,7 @@ const router = express.Router();
 
 const ContaController = require('./controllers/ContaController');
 
-router.get('/contas', ContaController.listarTodos);
+router.get('/contas', ContaController.listar);
 router.get('/contas/:id', ContaController.listarUm);
 router.post('/contas', ContaController.cadastrar);
 router.put('/contas/:id', ContaController.alterar);

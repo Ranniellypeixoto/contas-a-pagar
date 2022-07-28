@@ -2,7 +2,7 @@ const db = require('../db');
 
 module.exports = {
 
-    listarTodos: () =>{
+    listar: () =>{
         return new Promise((aceito, rejeitado)=>{
 
             db.query('SELECT * FROM contas', (error, results)=>{
