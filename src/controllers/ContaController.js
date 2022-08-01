@@ -9,7 +9,7 @@ module.exports = {
 
     visualizar: async (request, res) => {
         let id = request.params.id;
-        const conta = await ContaService.visualizar(request.id);
+        const conta = await ContaService.visualizar(id);
         res.json(conta);
     },
 
@@ -18,36 +18,16 @@ module.exports = {
         res.json(conta);
     },
 
-    alterar: async (req, res) => {
-        let json = { error: '', result: {} };
-
-        const id = req.params.id;
-        const { descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago } = req.body;
-
-        if (id && descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago) {
-            await ContaService.alterar(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
-            json.result = {
-                id,
-                descricao,
-                dataCompetencia,
-                dataVencimento,
-                valor,
-                dataPagamento,
-                valorPago
-            };
-        } else {
-            json.error = 'Campos não enviados';
-        }
-
-        res.json(json);
+    alterar: async (request, res) => {
+        const id = request.params.id;
+        const { descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago } = request.body;
+        const conta = await ContaService.alterar(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
+        res.json(conta);
+        
     },
 
     excluir: async (req, res) => {
-        let json = { error: '', result: {} };
-
-        await ContaService.excluir(req.params.id);
-
-        res.json(json);
-
+        const conta = await ContaService.excluir(req.params.id);
+        res.json(conta);
     }
 }

@@ -47,5 +47,36 @@ module.exports = {
         });
     },
 
+    change: async (conta) => {
+        const {
+            id,
+            descricao,
+            dataCompetencia,
+            dataVencimento,
+            valor,
+            dataPagamento,
+            valorPago
+        } = conta
+
+        return new Promise((aceito, rejeitado) => {
+            db.query('UPDATE contas SET descricao = ?, dataCompetencia = ?, dataVencimento = ?, valor = ?, dataPagamento = ?, valorPago = ? WHERE id = ?',
+                [descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago, id],
+                (error, results) => {
+                    if (error) { rejeitado(error); return; }
+                    aceito(results);
+                }
+            );
+        });
+    },
+
+    delete: (id) => {
+        return new Promise((aceito, rejeitado) => {
+            db.query('DELETE FROM contas WHERE id = ?', [id], (error, results) => {
+                if (error) { rejeitado(error); return; }
+                aceito(results);
+            });
+        });
+    }
 
 };
+

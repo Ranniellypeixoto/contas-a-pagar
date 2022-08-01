@@ -54,18 +54,12 @@ module.exports = {
         return response;
     },
 
-    visualizar: async (request) => {
-        let response = { error: '', result: {} };
-        const conta = await ContaRepository.findById(request.id);
-        
-        if (conta) {
-            response.result = conta;
-        }
+    visualizar: async (id) => {
+        const conta = await ContaRepository.findById(id);
 
-        ContaRepository.findById();
+        if (conta)
+            return conta;
 
-        return response;
-        
     },
 
     cadastrar: async (request) => {
@@ -84,25 +78,25 @@ module.exports = {
         return response
     },
 
-    alterar: (id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
-        return new Promise((aceito, rejeitado) => {
+    alterar: async (id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
+        let response = { error: [], result: {} };
+        const conta = await ContaRepository.change(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
 
-            db.query('UPDATE contas SET descricao = ?, dataCompetencia = ?, dataVencimento = ?, valor = ?, dataPagamento = ?, valorPago = ? WHERE id = ?', [descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago, id],
-                (error, results) => {
-                    if (error) { rejeitado(error); return; }
-                    aceito(results);
-                }
-            );
-        });
+        if (id && descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago) {
+
+            response.result = "Alteração realizada com sucesso"
+
+        } else {
+            response.error = "Campos obrigatórios não preenchidos"
+        }
+
+        return response
     },
 
-    excluir: (id) => {
-        return new Promise((aceito, rejeitado) => {
+    excluir: async (id) => {
+        await ContaRepository.delete(id);
 
-            db.query('DELETE FROM contas WHERE id = ?', [id], (error, results) => {
-                if (error) { rejeitado(error); return; }
-                aceito(results);
-            });
-        });
+        response = "Conta excluída com sucesso"
+        return response;
     }
 };
