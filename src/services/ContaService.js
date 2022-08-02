@@ -8,7 +8,8 @@ function montarConta(request) {
         dataVencimento: request.dataVencimento,
         valor: request.valor,
         dataPagamento: request.dataPagamento,
-        valorPago: request.valorPago
+        valorPago: request.valorPago,
+        fornecedorId: request.fornecedorId
     }
     return conta;
 }
@@ -19,13 +20,13 @@ function compararDatas(conta) {
     const dataDaCompetencia = new Date(conta.dataCompetencia);
     const dataDeVencimento = new Date(conta.dataVencimento);
     const dataAtual = new Date();
-    dataAtual.setHours(0,0,0,0);
+    dataAtual.setHours(0, 0, 0, 0);
     dataAtual.setHours(dataAtual.getHours() - 3)
 
-    if (dataDaCompetencia > dataAtual){
+    if (dataDaCompetencia > dataAtual) {
         response.error.push("Data de competência não pode ser superior a data atual")
     }
-    if (dataDeVencimento < dataDaCompetencia){
+    if (dataDeVencimento < dataDaCompetencia) {
         response.error.push("Data de vencimento não pode ser inferior a data de competência")
     }
 
@@ -35,45 +36,28 @@ function compararDatas(conta) {
 function validarConta(conta) {
     let response = { error: [], result: {} };
 
-    if (!conta.descricao.length)
+    if (!conta.descricao || !conta.descricao.length)
         response.error.push("O campo Descrição deve ser informado")
 
-    if (!conta.dataCompetencia.length)
+    if (!conta.dataCompetencia || !conta.dataCompetencia.length)
         response.error.push("O campo Data da competência deve ser informado")
 
-    if (!conta.dataVencimento.length)
+    if (!conta.dataVencimento || !conta.dataVencimento.length)
         response.error.push("O campo Data do vencimento deve ser informado")
 
-    if (!conta.valor.length)
+    if (!conta.valor || !conta.valor.length)
         response.error.push("O campo Valor deve ser informado")
 
+    if (!conta.fornecedorId)
+        response.error.push("O campo Fornecedor deve ser informado")
+
     return response
-
 }
-
-
 
 module.exports = {
 
-    listar: async (request) => {
-        let response = { error: '', result: [] };
-        const contas = await ContaRepository.findAll(request.body);
-
-        for (let i in contas) {
-            response.result.push({
-                id: contas[i].id,
-                descricao: contas[i].descricao,
-                dataCompetencia: contas[i].dataCompetencia,
-                dataVencimento: contas[i].dataVencimento,
-                valor: contas[i].valor,
-                dataPagamento: contas[i].dataPagamento,
-                valorPago: contas[i].valorPago
-
-            });
-        }
-        ContaRepository.findAll();
-
-        return response;
+    listar: async () => {
+        return await ContaRepository.findAll();
     },
 
     visualizar: async (id) => {
