@@ -9,3 +9,11 @@ create table contas (
     juros varchar(3),
     valorPago varchar(10)
 );
+
+ALTER TABLE contas 
+    ADD fornecedorId INT NULL;
+
+ALTER TABLE contas 
+    ADD CONSTRAINT conta_fornecedor_FK 
+    FOREIGN KEY (fornecedorId) 
+    REFERENCES fornecedores(id);
