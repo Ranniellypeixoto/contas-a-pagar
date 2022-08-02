@@ -13,8 +13,28 @@ function montarConta(request) {
     return conta;
 }
 
+function compararDatas(conta) {
+    let response = { error: [], result: {} };
+
+    const dataDaCompetencia = new Date(conta.dataCompetencia);
+    const dataDeVencimento = new Date(conta.dataVencimento);
+    const dataAtual = new Date();
+    dataAtual.setHours(0,0,0,0);
+    dataAtual.setHours(dataAtual.getHours() - 3)
+
+    if (dataDaCompetencia > dataAtual){
+        response.error.push("Data de competência não pode ser superior a data atual")
+    }
+    if (dataDeVencimento < dataDaCompetencia){
+        response.error.push("Data de vencimento não pode ser inferior a data de competência")
+    }
+
+    return response
+}
+
 function validarConta(conta) {
     let response = { error: [], result: {} };
+
     if (!conta.descricao.length)
         response.error.push("O campo Descrição deve ser informado")
 
@@ -30,6 +50,8 @@ function validarConta(conta) {
     return response
 
 }
+
+
 
 module.exports = {
 
@@ -67,9 +89,12 @@ module.exports = {
         const conta = montarConta(request)
 
         const retornoValidacao = validarConta(conta)
+        const retornoCompararDatas = compararDatas(conta)
 
         if (retornoValidacao.error.length) {
             return retornoValidacao
+        } else if (retornoCompararDatas.error.length) {
+            return retornoCompararDatas
         }
 
         ContaRepository.save(conta);
@@ -79,8 +104,8 @@ module.exports = {
     },
 
     alterar: async (id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
-        let response = { error: [], result: {} };
-        const conta = await ContaRepository.change(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
+        let response = { error: '', result: {} };
+        await ContaRepository.change(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
 
         if (id && descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago) {
 
