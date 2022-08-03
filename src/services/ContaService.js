@@ -89,6 +89,7 @@ module.exports = {
 
     alterar: async (id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
         let response = { error: '', result: {} };
+        
         await ContaRepository.change(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
 
         if (id && descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago) {
@@ -98,7 +99,7 @@ module.exports = {
         } else {
             response.error = "Campos obrigatórios não preenchidos"
         }
-
+        
         return response
     },
 

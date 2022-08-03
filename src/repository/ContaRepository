@@ -62,17 +62,7 @@ module.exports = {
         });
     },
 
-    change: async (conta) => {
-        const {
-            id,
-            descricao,
-            dataCompetencia,
-            dataVencimento,
-            valor,
-            dataPagamento,
-            valorPago
-        } = conta
-
+    change: (id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
         return new Promise((aceito, rejeitado) => {
             db.query('UPDATE contas SET descricao = ?, dataCompetencia = ?, dataVencimento = ?, valor = ?, dataPagamento = ?, valorPago = ? WHERE id = ?',
                 [descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago, id],
