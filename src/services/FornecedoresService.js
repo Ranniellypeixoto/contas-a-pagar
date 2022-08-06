@@ -12,7 +12,7 @@ function montarCadastro(request) {
 }
 
 
-function validarCadastro(fornecedor) {
+async function validarCadastro(fornecedor) {
     let response = { error: [], result: {} };
 
     if (!fornecedor.nome || !fornecedor.nome.length)
@@ -23,6 +23,11 @@ function validarCadastro(fornecedor) {
 
     if (!validarCNPJCPF(fornecedor.cnpj_cpf))
         response.error.push("O CNPJ/CPF informado é inválido")
+
+    const fornecedorEncontrado = await fornecedorExistente(fornecedor.cnpj_cpf)    
+    if(fornecedorEncontrado){
+        response.error.push(`O CNPJ/CPF informado já pertence a um fornecedor cadastrado de nome ${fornecedorEncontrado.nome}`)
+    }
 
     if (!fornecedor.situacao || !fornecedor.situacao.length)
         response.error.push("O campo Situação deve ser informado")
@@ -77,6 +82,11 @@ function validarCPF(cpf){
     return true;
 }
 
+async function fornecedorExistente(cnpj_cpf){
+    const fornecedor = await FornecedoresRepository.findByCnpjCpf(cnpj_cpf);
+    return fornecedor;
+}
+
 module.exports = {
 
     listar: async () => {
@@ -95,7 +105,7 @@ module.exports = {
         let response = { error: [], result: {} };
         const fornecedor = montarCadastro(request)
 
-        const retornoValidacao = validarCadastro(fornecedor)
+        const retornoValidacao = await validarCadastro(fornecedor)
 
         if (retornoValidacao.error.length) {
             return retornoValidacao

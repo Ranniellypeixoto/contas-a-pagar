@@ -65,7 +65,21 @@ module.exports = {
                 aceito(results);
             });
         });
-    }
+    },
+
+    findByCnpjCpf: (cnpj_cpf) => {
+
+        return new Promise((aceito, rejeitado) => {
+            db.query('SELECT * FROM fornecedores WHERE cnpj_cpf = ?', [cnpj_cpf], (error, results) => {
+                if (error) { rejeitado(error); return; }
+                if (results.length > 0) {
+                    aceito(results[0]);
+                } else {
+                    aceito(false)
+                }
+            });
+        });
+    },
 
 };
 
