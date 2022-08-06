@@ -2,31 +2,29 @@ const ContaService = require('../services/ContaService');
 
 module.exports = {
     listar: async (request, res) => {
-        const fornecedor = await ContaService.listar(request.body);
-        res.json(fornecedor);
+        const conta = await ContaService.listar(request.body);
+        res.json(conta);
     },
 
     visualizar: async (request, res) => {
         let id = request.params.id;
-        const fornecedor = await ContaService.visualizar(id);
-        res.json(fornecedor);
+        const conta = await ContaService.visualizar(id);
+        res.json(conta);
     },
 
     cadastrar: async (request, res) => {
-        const fornecedor = await ContaService.cadastrar(request.body);
-        res.json(fornecedor);
+        const conta = await ContaService.cadastrar(request.body);
+        res.json(conta);
     },
 
     alterar: async (request, res) => {
         const id = request.params.id;
-        const { descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago } = request.body;
-        const fornecedor = await ContaService.alterar(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
-        res.json(fornecedor);
-        
+        const conta = await ContaService.alterar(id, request.body);
+        res.json(conta);
     },
 
     excluir: async (req, res) => {
-        const fornecedor = await ContaService.excluir(req.params.id);
-        res.json(fornecedor);
+        const conta = await ContaService.excluir(req.params.id);
+        res.json(conta);
     }
 }
