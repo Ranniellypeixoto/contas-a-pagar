@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "e36e9d80-dc0c-4015-8616-a4fded4315c8",
+		"_postman_id": "eaf15a2d-bce3-4cfb-9e4d-2e698110deaa",
 		"name": "Contas a pagar",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21356489"
+		"_exporter_id": "384675"
 	},
 	"item": [
 		{
@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"descricao\": \"Energia\",\r\n    \"dataCompetencia\": \"2022-08-02\",\r\n    \"dataVencimento\": \"2022-08-02\",\r\n    \"valor\": \"250,00\",\r\n    \"dataPagamento\": \"\",\r\n    \"valorPago\": \"\",\r\n    \"fornecedorId\":1\r\n}",
+							"raw": "{\r\n    \"descricao\": \"Água\",\r\n    \"dataCompetencia\": \"2022-08-02\",\r\n    \"dataVencimento\": \"2022-08-02\",\r\n    \"valor\": \"50,00\",\r\n    \"dataPagamento\": \"\",\r\n    \"valorPago\": \"\",\r\n    \"fornecedorId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"descricao\": \"Despesas Diversas\",\r\n    \"dataCompetencia\": \"2022-08-26\",\r\n    \"dataVencimento\": \"2022-08-26\",\r\n    \"valor\": \"125,25\",\r\n    \"dataPagamento\": \"2022-09-26\",\r\n    \"valorPago\": \"125,25\"\r\n}",
+							"raw": "{\r\n    \"descricao\": \"Energia\",\r\n    \"dataCompetencia\": \"2022-08-01\",\r\n    \"dataVencimento\": \"2022-08-10\",\r\n    \"valor\": \"250,00\",\r\n    \"dataPagamento\": \"2022-08-10\",\r\n    \"valorPago\": \"250,00\",\r\n    \"fornecedorId\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -53,7 +53,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/contas/137",
+							"raw": "http://localhost:3000/api/contas/18",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -62,7 +62,7 @@
 							"path": [
 								"api",
 								"contas",
-								"137"
+								"18"
 							]
 						}
 					},
@@ -74,7 +74,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/contas/134",
+							"raw": "http://localhost:3000/api/contas/16",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -83,7 +83,7 @@
 							"path": [
 								"api",
 								"contas",
-								"134"
+								"16"
 							]
 						}
 					},
@@ -95,7 +95,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/contas/137",
+							"raw": "http://localhost:3000/api/contas/18",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -104,7 +104,7 @@
 							"path": [
 								"api",
 								"contas",
-								"137"
+								"18"
 							]
 						}
 					},
@@ -129,6 +129,28 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "total Mes/Ano",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/contas/total/08-2022",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"contas",
+								"total",
+								"08-2022"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -142,7 +164,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"X\",\r\n    \"cnpj_cpf\": \"65703613000130\",\r\n    \"situacao\": \"1\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"Y\",\r\n    \"cnpj_cpf\": \"06713832482\",\r\n    \"situacao\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -171,7 +193,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Internet\",\r\n    \"cnpj_cpf\": \"02576600000128\",\r\n    \"situacao\": \"1\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"Brisanet\",\r\n    \"cnpj_cpf\": \"06713832482\",\r\n    \"situacao\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,7 +201,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/fornecedores/2",
+							"raw": "http://localhost:3000/api/fornecedores/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -188,7 +210,7 @@
 							"path": [
 								"api",
 								"fornecedores",
-								"2"
+								"3"
 							]
 						}
 					},
@@ -242,7 +264,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/contas",
+							"raw": "http://localhost:3000/api/fornecedores",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -250,7 +272,7 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"contas"
+								"fornecedores"
 							]
 						}
 					},

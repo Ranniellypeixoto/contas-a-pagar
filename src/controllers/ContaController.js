@@ -26,5 +26,11 @@ module.exports = {
     excluir: async (req, res) => {
         const conta = await ContaService.excluir(req.params.id);
         res.json(conta);
-    }
+    },
+
+    totalContasPorMesAno: async (request, res) => {
+        let periodo = request.params.periodo;
+        const total = await ContaService.totalContasPorMesAno(periodo);
+        res.json(total);
+    },
 }

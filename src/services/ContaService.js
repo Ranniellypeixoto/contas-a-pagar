@@ -111,5 +111,14 @@ module.exports = {
 
         response = "Conta excluída com sucesso"
         return response;
-    }
+    },
+
+    totalContasPorMesAno: async (periodo) => {
+        const contas = await ContaRepository.totalContasPorMesAno(periodo);
+        const response  = {periodo, total: 0}
+        contas.forEach(conta => {
+            response.total += parseFloat(conta.valor)
+        });
+        return response;
+    },
 };

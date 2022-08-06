@@ -108,7 +108,19 @@ module.exports = {
                 aceito(results);
             });
         });
-    }
+    },
 
+    totalContasPorMesAno: (periodo) => {
+        return new Promise((aceito, rejeitado) => {
+            db.query(`SELECT * FROM contas where DATE_FORMAT(dataVencimento,'%m-%Y') = ?`, [periodo], (error, results) => {
+                if (error) { rejeitado(error); return; }
+                if (results.length > 0) {
+                    aceito(results);
+                } else {
+                    aceito(false)
+                }
+            });
+        });
+    },
 };
 
