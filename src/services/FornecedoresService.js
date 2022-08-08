@@ -11,7 +11,6 @@ function montarCadastro(request) {
     return fornecedor;
 }
 
-
 async function validarCadastro(fornecedor) {
     let response = { error: [], result: {} };
 
@@ -24,8 +23,8 @@ async function validarCadastro(fornecedor) {
     if (!validarCNPJCPF(fornecedor.cnpj_cpf))
         response.error.push("O CNPJ/CPF informado é inválido")
 
-    const fornecedorEncontrado = await fornecedorExistente(fornecedor.cnpj_cpf)    
-    if(fornecedorEncontrado){
+    const fornecedorEncontrado = await fornecedorExistente(fornecedor.cnpj_cpf)
+    if (fornecedorEncontrado) {
         response.error.push(`O CNPJ/CPF informado já pertence a um fornecedor cadastrado de nome ${fornecedorEncontrado.nome}`)
     }
 
@@ -35,7 +34,7 @@ async function validarCadastro(fornecedor) {
     return response
 }
 
-function validarCNPJCPF(cnpj_cpf){
+function validarCNPJCPF(cnpj_cpf) {
     if (cnpj_cpf.length == 14) {
         return validarCNPJ(cnpj_cpf)
     }
@@ -43,11 +42,54 @@ function validarCNPJCPF(cnpj_cpf){
     return validarCPF(cnpj_cpf)
 }
 
-function validarCNPJ(cnpj){
+function validarCNPJ(cnpj) {
 
+    if (cnpj.length != 14)
+        return false;
+
+    if (cnpj == "00000000000000" ||
+        cnpj == "11111111111111" ||
+        cnpj == "22222222222222" ||
+        cnpj == "33333333333333" ||
+        cnpj == "44444444444444" ||
+        cnpj == "55555555555555" ||
+        cnpj == "66666666666666" ||
+        cnpj == "77777777777777" ||
+        cnpj == "88888888888888" ||
+        cnpj == "99999999999999")
+        return false;
+
+    tamanho = cnpj.length - 2
+    numeros = cnpj.substring(0, tamanho);
+    digitos = cnpj.substring(tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2)
+            pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(0))
+        return false;
+
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2)
+            pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(1))
+        return false;
+
+    return true;
 }
 
-function validarCPF(cpf){
+function validarCPF(cpf) {
     if (!cpf) {
         return false
     }
@@ -82,7 +124,7 @@ function validarCPF(cpf){
     return true;
 }
 
-async function fornecedorExistente(cnpj_cpf){
+async function fornecedorExistente(cnpj_cpf) {
     const fornecedor = await FornecedoresRepository.findByCnpjCpf(cnpj_cpf);
     return fornecedor;
 }
@@ -117,23 +159,19 @@ module.exports = {
         return response
     },
 
-    /*
-    TODO esse método é similar ao método cadastrar, da mesma forma que foi feito 
-    em no cadastro e alterar uma conta
-    */
-    alterar: async (id, nome, cnpj_cpf, situacao) => {
-        let response = { error: '', result: {} };
-        
-        await FornecedoresRepository.change(id, nome, cnpj_cpf, situacao);
+    alterar: async (id, request) => {
+        let response = { error: [], result: {} };
+        const fornecedor = montarCadastro(request)
 
-        if (id && nome && cnpj_cpf && situacao) {
+        const retornoValidacao = await validarCadastro(fornecedor)
 
-            response.result = "Alteração realizada com sucesso"
-
-        } else {
-            response.error = "Campos obrigatórios não preenchidos"
+        if (retornoValidacao.error.length) {
+            return retornoValidacao
         }
-        
+
+        FornecedoresRepository.update(id, fornecedor);
+
+        response.result = "Alteração realizada com sucesso"
         return response
     },
 

@@ -46,10 +46,23 @@ module.exports = {
         });
     },
 
-    change: (id, nome, cnpj_cpf, situacao) => {
+    update: (id, conta) => {
+        const {
+            nome,
+            cnpj_cpf,
+            situacao,
+        } = conta
         return new Promise((aceito, rejeitado) => {
-            db.query('UPDATE fornecedores SET nome = ?, cnpj_cpf = ?, situacao = ? WHERE id = ?',
-                [ nome, cnpj_cpf, situacao, id],
+            db.query(`UPDATE fornecedores
+                     SET nome = ?,
+                     cnpj_cpf = ?,
+                     situacao = ?
+                WHERE id = ?`,
+                [ nome,
+                  cnpj_cpf,
+                  situacao,
+                  id
+                ],
                 (error, results) => {
                     if (error) { rejeitado(error); return; }
                     aceito(results);

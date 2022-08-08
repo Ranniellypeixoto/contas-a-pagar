@@ -20,8 +20,7 @@ module.exports = {
 
     alterar: async (request, res) => {
         const id = request.params.id;
-        const { nome, cnpj_cpf, situacao } = request.body;
-        const fornecedor = await FornecedoresService.alterar(id,nome, cnpj_cpf, situacao);
+        const fornecedor = await FornecedoresService.alterar(id, request.body);
         res.json(fornecedor);
         
     },
