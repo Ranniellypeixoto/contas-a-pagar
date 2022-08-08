@@ -48,12 +48,17 @@ module.exports = {
             dataCompetencia,
             dataVencimento,
             valor,
+            dataPagamento,
+            desconto,
+            juros,
+            multa,
+            valorPago,
             fornecedorId
         } = conta
 
         return new Promise((aceito, rejeitado) => {
-            db.query('INSERT INTO contas (descricao, dataCompetencia, dataVencimento, valor, fornecedorId) VALUES (?, ?, ?, ?,?)',
-                [descricao, dataCompetencia, dataVencimento, valor, fornecedorId],
+            db.query('INSERT INTO contas (descricao, dataCompetencia, dataVencimento, valor, dataPagamento, desconto, juros, multa, valorPago fornecedorId) VALUES (?, ?, ?, ?,?)',
+                [descricao, dataCompetencia, dataVencimento, valor, dataPagamento, desconto, juros, multa, valorPago, fornecedorId],
                 (error, results) => {
                     if (error) { rejeitado(error); return; }
                     aceito(results.insertid);
@@ -69,6 +74,9 @@ module.exports = {
             dataVencimento,
             valor,
             dataPagamento,
+            desconto,
+            juros,
+            multa,
             valorPago,
             fornecedorId
         } = conta
@@ -79,7 +87,10 @@ module.exports = {
                     dataCompetencia = ?, 
                     dataVencimento = ?, 
                     valor = ?, 
-                    dataPagamento = ?, 
+                    dataPagamento = ?,
+                    desconto = ?,
+                    juros = ?,
+                    multa = ?, 
                     valorPago = ?, 
                     fornecedorId = ? 
                 WHERE id = ?`,
@@ -89,6 +100,9 @@ module.exports = {
                     dataVencimento,
                     valor,
                     dataPagamento,
+                    desconto,
+                    juros,
+                    multa,
                     valorPago,
                     fornecedorId,
                     id

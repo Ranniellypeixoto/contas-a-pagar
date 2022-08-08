@@ -8,6 +8,9 @@ function montarConta(request) {
         dataVencimento: request.dataVencimento,
         valor: request.valor,
         dataPagamento: request.dataPagamento,
+        desconto: request.desconto,
+        juros: request.juros,
+        multa: request.multa,
         valorPago: request.valorPago,
         fornecedorId: request.fornecedorId
     }
