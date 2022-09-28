@@ -48,12 +48,17 @@ module.exports = {
             dataCompetencia,
             dataVencimento,
             valor,
+            dataPagamento,
+            desconto,
+            juros,
+            multa,
+            valorPago,
             fornecedorId
         } = conta
 
         return new Promise((aceito, rejeitado) => {
-            db.query('INSERT INTO contas (descricao, dataCompetencia, dataVencimento, valor, fornecedorId) VALUES (?, ?, ?, ?,?)',
-                [descricao, dataCompetencia, dataVencimento, valor, fornecedorId],
+            db.query('INSERT INTO contas (descricao, dataCompetencia, dataVencimento, valor, dataPagamento, desconto, juros, multa, valorPago fornecedorId) VALUES (?, ?, ?, ?,?)',
+                [descricao, dataCompetencia, dataVencimento, valor, dataPagamento, desconto, juros, multa, valorPago, fornecedorId],
                 (error, results) => {
                     if (error) { rejeitado(error); return; }
                     aceito(results.insertid);
@@ -62,10 +67,46 @@ module.exports = {
         });
     },
 
-    change: (id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
+    update: (id, conta) => {
+        const {
+            descricao,
+            dataCompetencia,
+            dataVencimento,
+            valor,
+            dataPagamento,
+            desconto,
+            juros,
+            multa,
+            valorPago,
+            fornecedorId
+        } = conta
+
         return new Promise((aceito, rejeitado) => {
-            db.query('UPDATE contas SET descricao = ?, dataCompetencia = ?, dataVencimento = ?, valor = ?, dataPagamento = ?, valorPago = ? WHERE id = ?',
-                [descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago, id],
+            db.query(`UPDATE contas 
+                    SET descricao = ?, 
+                    dataCompetencia = ?, 
+                    dataVencimento = ?, 
+                    valor = ?, 
+                    dataPagamento = ?,
+                    desconto = ?,
+                    juros = ?,
+                    multa = ?, 
+                    valorPago = ?, 
+                    fornecedorId = ? 
+                WHERE id = ?`,
+                [
+                    descricao,
+                    dataCompetencia,
+                    dataVencimento,
+                    valor,
+                    dataPagamento,
+                    desconto,
+                    juros,
+                    multa,
+                    valorPago,
+                    fornecedorId,
+                    id
+                ],
                 (error, results) => {
                     if (error) { rejeitado(error); return; }
                     aceito(results);
@@ -81,7 +122,19 @@ module.exports = {
                 aceito(results);
             });
         });
-    }
+    },
 
+    totalContasPorMesAno: (periodo) => {
+        return new Promise((aceito, rejeitado) => {
+            db.query(`SELECT * FROM contas where DATE_FORMAT(dataVencimento,'%m-%Y') = ?`, [periodo], (error, results) => {
+                if (error) { rejeitado(error); return; }
+                if (results.length > 0) {
+                    aceito(results);
+                } else {
+                    aceito(false)
+                }
+            });
+        });
+    },
 };
 

@@ -1,4 +1,3 @@
-const { visualizar } = require('../services/ContaService');
 const ContaService = require('../services/ContaService');
 
 module.exports = {
@@ -20,14 +19,18 @@ module.exports = {
 
     alterar: async (request, res) => {
         const id = request.params.id;
-        const { descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago } = request.body;
-        const conta = await ContaService.alterar(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
+        const conta = await ContaService.alterar(id, request.body);
         res.json(conta);
-        
     },
 
     excluir: async (req, res) => {
         const conta = await ContaService.excluir(req.params.id);
         res.json(conta);
-    }
+    },
+
+    totalContasPorMesAno: async (request, res) => {
+        let periodo = request.params.periodo;
+        const total = await ContaService.totalContasPorMesAno(periodo);
+        res.json(total);
+    },
 }

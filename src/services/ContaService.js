@@ -8,6 +8,9 @@ function montarConta(request) {
         dataVencimento: request.dataVencimento,
         valor: request.valor,
         dataPagamento: request.dataPagamento,
+        desconto: request.desconto,
+        juros: request.juros,
+        multa: request.multa,
         valorPago: request.valorPago,
         fornecedorId: request.fornecedorId
     }
@@ -87,19 +90,22 @@ module.exports = {
         return response
     },
 
-    alterar: async (id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago) => {
-        let response = { error: '', result: {} };
-        
-        await ContaRepository.change(id, descricao, dataCompetencia, dataVencimento, valor, dataPagamento, valorPago);
+    alterar: async (id, request) => {
+        let response = { error: [], result: {} };
+        const conta = montarConta(request)
 
-        if (id && descricao && dataCompetencia && dataVencimento && valor && dataPagamento && valorPago) {
+        const retornoValidacao = validarConta(conta)
+        const retornoCompararDatas = compararDatas(conta)
 
-            response.result = "Alteração realizada com sucesso"
-
-        } else {
-            response.error = "Campos obrigatórios não preenchidos"
+        if (retornoValidacao.error.length) {
+            return retornoValidacao
+        } else if (retornoCompararDatas.error.length) {
+            return retornoCompararDatas
         }
-        
+
+        ContaRepository.update(id, conta);
+
+        response.result = "Alteração realizada com sucesso"
         return response
     },
 
@@ -108,5 +114,14 @@ module.exports = {
 
         response = "Conta excluída com sucesso"
         return response;
-    }
+    },
+
+    totalContasPorMesAno: async (periodo) => {
+        const contas = await ContaRepository.totalContasPorMesAno(periodo);
+        const response  = {periodo, total: 0}
+        contas.forEach(conta => {
+            response.total += parseFloat(conta.valor)
+        });
+        return response;
+    },
 };
