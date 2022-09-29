@@ -34,6 +34,24 @@ async function validarCadastro(fornecedor) {
     return response
 }
 
+async function validarCadastroUpdate(fornecedor) {
+    let response = { error: [], result: {} };
+
+    if (!fornecedor.nome || !fornecedor.nome.length)
+        response.error.push("O campo Nome deve ser informado")
+
+    if (!fornecedor.cnpj_cpf || !fornecedor.cnpj_cpf.length)
+        response.error.push("O campo CNPJ/CPF não foi informado")
+
+    if (!validarCNPJCPF(fornecedor.cnpj_cpf))
+        response.error.push("O CNPJ/CPF informado é inválido")
+
+    if (!fornecedor.situacao || !fornecedor.situacao.length)
+        response.error.push("O campo Situação deve ser informado")
+
+    return response
+}
+
 function validarCNPJCPF(cnpj_cpf) {
     if (cnpj_cpf.length == 14) {
         return validarCNPJ(cnpj_cpf)
@@ -163,7 +181,7 @@ module.exports = {
         let response = { error: [], result: {} };
         const fornecedor = montarCadastro(request)
 
-        const retornoValidacao = await validarCadastro(fornecedor)
+        const retornoValidacao = await validarCadastroUpdate(fornecedor)
 
         if (retornoValidacao.error.length) {
             return retornoValidacao

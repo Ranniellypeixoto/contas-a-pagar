@@ -57,7 +57,7 @@ module.exports = {
         } = conta
 
         return new Promise((aceito, rejeitado) => {
-            db.query('INSERT INTO contas (descricao, dataCompetencia, dataVencimento, valor, dataPagamento, desconto, juros, multa, valorPago fornecedorId) VALUES (?, ?, ?, ?,?)',
+            db.query('INSERT INTO contas (descricao, dataCompetencia, dataVencimento, valor, dataPagamento, desconto, juros, multa, valorPago, fornecedorId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [descricao, dataCompetencia, dataVencimento, valor, dataPagamento, desconto, juros, multa, valorPago, fornecedorId],
                 (error, results) => {
                     if (error) { rejeitado(error); return; }
